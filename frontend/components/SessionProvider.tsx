@@ -26,7 +26,7 @@ export function SessionProvider({ children }) {
         { name: 'Ed25519' },
         true, // extractable
         ['sign', 'verify']
-      );
+      ) as CryptoKeyPair;
 
       // Export public key for sharing/routing
       const exportedPublic = await window.crypto.subtle.exportKey('spki', keyPair.publicKey);

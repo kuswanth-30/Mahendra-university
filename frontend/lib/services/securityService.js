@@ -52,7 +52,7 @@ class SecurityService {
 
   /**
    * emergencyWipe(): Panic Protocol - Emergency Wipe for 404 Found
-   * - Deletes IndexedDB database instance using Dexie.delete('404FoundDB')
+   * - Deletes IndexedDB database instance using Dexie.delete('FoundDatabase')
    * - Clears sessionStorage and localStorage
    * - Performs hard refresh with window.location.reload(true)
    * - Flushes JavaScript memory context where encryption keys reside
@@ -62,7 +62,7 @@ class SecurityService {
     
     try {
       // Step 1: Delete IndexedDB database instance
-      await Dexie.delete('404FoundDB');
+      await Dexie.delete('FoundDatabase');
       console.log('[SECURITY] IndexedDB database deleted');
 
       // Step 2: Forcefully clear sessionStorage and localStorage

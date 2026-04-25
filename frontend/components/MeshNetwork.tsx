@@ -157,260 +157,256 @@ export default function MeshNetwork() {
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
 
       {/* Identity Card */}
-      <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-        <div className="flex items-center gap-3 mb-4">
-          <Shield className="w-5 h-5 text-slate-700" />
-          <h2 className="text-sm font-bold font-mono text-slate-900 uppercase tracking-wider">
+      <section className="bg-slate-900/50 backdrop-blur-md border border-white/5 rounded-xl p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-white/10 hover:scale-[1.01] cursor-pointer group">
+        <div className="flex items-center gap-3 mb-6">
+          <Shield className="w-5 h-5 text-slate-400 group-hover:text-[#00ff41] transition-colors" />
+          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wide group-hover:text-slate-300 transition-colors">
             Ephemeral Identity
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <p className="text-slate-500">Public Key</p>
-            <p className="text-slate-900 font-mono bg-slate-100 px-3 py-2 rounded-lg break-all">
+            <p className="text-sm font-semibold text-slate-400 tracking-wide uppercase">Public Key</p>
+            <p className="text-base font-bold text-slate-100 font-mono bg-black/30 px-4 py-3 rounded-lg break-all border border-white/5">
               {truncateKey(publicKey)}
             </p>
           </div>
           <div className="space-y-2">
-            <p className="text-slate-500">Lamport Clock</p>
-            <p className="text-slate-900 font-mono bg-slate-100 px-3 py-2 rounded-lg">
+            <p className="text-sm font-semibold text-slate-400 tracking-wide uppercase">Lamport Clock</p>
+            <p className="text-base font-bold text-slate-100 font-mono bg-black/30 px-4 py-3 rounded-lg border border-white/5">
               {lamportClock}
             </p>
           </div>
         </div>
-        <div className="flex gap-3 mt-4">
+        <div className="flex gap-4 mt-6">
           <button
             onClick={handleRotateKeys}
-            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-medium font-mono transition-colors"
+            className="px-6 py-2 bg-slate-100 hover:bg-white text-slate-900 rounded-lg text-xs font-bold font-mono transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,255,65,0.3)] hover:scale-[1.02] cursor-pointer flex items-center gap-2"
           >
-            <RefreshCw className="w-3 h-3 inline mr-2" />
-            Rotate Keys (24h)
+            <RefreshCw className="w-3 h-3" />
+            ROTATE_KEYS (24H)
           </button>
           <button
             onClick={handleGetLocation}
-            className="px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-medium font-mono transition-colors"
+            className="px-6 py-2 bg-[#00ff41]/10 hover:bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]/30 rounded-lg text-xs font-bold font-mono transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,255,65,0.2)] flex items-center gap-2"
           >
-            <MapPin className="w-3 h-3 inline mr-2" />
-            Set Location
+            <MapPin className="w-3 h-3" />
+            SET_LOCATION
           </button>
         </div>
         {location && (
-          <p className="mt-2 text-[10px] text-slate-500 font-mono">
-            Location: {location.lat.toFixed(6)}, {location.long.toFixed(6)}
+          <p className="mt-3 text-[10px] text-slate-500 font-mono uppercase tracking-widest">
+            COORDINATES: {location.lat.toFixed(6)}, {location.long.toFixed(6)}
           </p>
         )}
-      </div>
+      </section>
 
       {/* Transport & Discovery */}
-      <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-        <div className="flex items-center gap-3 mb-4">
-          <Radio className="w-5 h-5 text-slate-700" />
-          <h2 className="text-sm font-bold font-mono text-slate-900 uppercase tracking-wider">
+      <section className="bg-slate-900/50 backdrop-blur-md border border-white/5 rounded-xl p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-white/10 hover:scale-[1.01] cursor-pointer group">
+        <div className="flex items-center gap-3 mb-6">
+          <Radio className="w-5 h-5 text-slate-400 group-hover:text-[#00ff41] transition-colors" />
+          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wide group-hover:text-slate-300 transition-colors">
             Transport & Discovery
           </h2>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-          <div className="bg-slate-50 rounded-lg p-3 text-center">
-            <p className="text-[10px] text-slate-500 font-mono uppercase">Active Adapter</p>
-            <p className="text-sm font-bold text-slate-900 font-mono mt-1">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+          <div className="bg-black/30 border border-white/5 rounded-lg p-4 text-center transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:bg-white/5 cursor-pointer">
+            <p className="text-[10px] font-semibold text-slate-400 tracking-widest uppercase">Active Adapter</p>
+            <p className="text-base font-bold text-slate-100 font-mono mt-2">
               {activeTransport === 'ble' ? (
-                <span className="flex items-center justify-center gap-1">
-                  <Bluetooth className="w-4 h-4 text-blue-500" /> BLE
+                <span className="flex items-center justify-center gap-2">
+                  <Bluetooth className="w-4 h-4 text-blue-400" /> BLE
                 </span>
               ) : activeTransport === 'webrtc' ? (
-                <span className="flex items-center justify-center gap-1">
-                  <Globe className="w-4 h-4 text-emerald-500" /> WebRTC
+                <span className="flex items-center justify-center gap-2">
+                  <Globe className="w-4 h-4 text-[#00ff41]" /> WebRTC
                 </span>
-              ) : 'None'}
+              ) : 'NONE'}
             </p>
           </div>
-          <div className="bg-slate-50 rounded-lg p-3 text-center">
-            <p className="text-[10px] text-slate-500 font-mono uppercase">Peers</p>
-            <p className="text-sm font-bold text-slate-900 font-mono mt-1">
+          <div className="bg-black/30 border border-white/5 rounded-lg p-4 text-center transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:bg-white/5 cursor-pointer">
+            <p className="text-[10px] font-semibold text-slate-400 tracking-widest uppercase">Peers</p>
+            <p className="text-base font-bold text-slate-100 font-mono mt-2">
               {peers.filter(p => p.status !== 'disconnected').length}
             </p>
           </div>
-          <div classClassName="bg-slate-50 rounded-lg p-3 text-center">
-            <p className="text-[10px] text-slate-500 font-mono uppercase">Discovering</p>
-            <p className="text-sm font-bold text-slate-900 font-mono mt-1">
+          <div className="bg-black/30 border border-white/5 rounded-lg p-4 text-center transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:bg-white/5 cursor-pointer">
+            <p className="text-[10px] font-semibold text-slate-400 tracking-widest uppercase">Discovering</p>
+            <p className="text-base font-bold text-slate-100 font-mono mt-2">
               {isDiscovering ? (
-                <span className="text-emerald-600 flex items-center justify-center gap-1">
-                  <Activity className="w-4 h-4 animate-pulse" /> Yes
+                <span className="text-[#00ff41] flex items-center justify-center gap-2 animate-pulse">
+                  <Activity className="w-4 h-4" /> YES
                 </span>
               ) : (
-                <span className="text-slate-400">No</span>
+                <span className="text-slate-500">NO</span>
               )}
             </p>
           </div>
-          <div className="bg-slate-50 rounded-lg p-3 text-center">
-            <p className="text-[10px] text-slate-500 font-mono uppercase">Grid Cell</p>
-            <p className="text-sm font-bold text-slate-900 font-mono mt-1">
-              {location ? 'Set' : 'None'}
+          <div className="bg-black/30 border border-white/5 rounded-lg p-4 text-center transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:bg-white/5 cursor-pointer">
+            <p className="text-[10px] font-semibold text-slate-400 tracking-widest uppercase">Grid Cell</p>
+            <p className="text-base font-bold text-slate-100 font-mono mt-2">
+              {location ? 'SET' : 'NONE'}
             </p>
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-4">
           <button
             onClick={isDiscovering ? handleStopDiscovery : handleStartDiscovery}
-            className={`px-4 py-2 rounded-lg text-xs font-medium font-mono transition-colors ${
+            className={`px-6 py-2 rounded-lg text-xs font-bold font-mono transition-all duration-300 cursor-pointer flex items-center gap-2 ${
               isDiscovering
-                ? 'bg-red-50 hover:bg-red-100 text-red-700 border border-red-200'
-                : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200'
+                ? 'bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 hover:shadow-[0_0_15px_rgba(239,68,68,0.2)]'
+                : 'bg-[#00ff41]/10 hover:bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]/30 hover:shadow-[0_0_15px_rgba(0,255,65,0.2)]'
             }`}
           >
             {isDiscovering ? (
-              <><WifiOff className="w-3 h-3 inline mr-2" /> Stop Discovery</>
+              <><WifiOff className="w-3 h-3" /> STOP_DISCOVERY</>
             ) : (
-              <><Wifi className="w-3 h-3 inline mr-2" /> Start Discovery</>
+              <><Wifi className="w-3 h-3" /> START_DISCOVERY</>
             )}
           </button>
           <button
             onClick={handleSimulateSync}
-            className="px-4 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 rounded-lg text-xs font-medium font-mono transition-colors"
+            className="px-6 py-2 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 rounded-lg text-xs font-bold font-mono transition-all duration-300 hover:shadow-[0_0_15px_rgba(59,130,246,0.2)] cursor-pointer flex items-center gap-2"
           >
-            <RefreshCw className="w-3 h-3 inline mr-2" />
-            Simulate Sync
+            <RefreshCw className="w-3 h-3" />
+            SIMULATE_SYNC
           </button>
         </div>
-      </div>
+      </section>
 
       {/* Gossip Engine Stats */}
-      <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-        <div className="flex items-center gap-3 mb-4">
-          <Layers className="w-5 h-5 text-slate-700" />
-          <h2 className="text-sm font-bold font-mono text-slate-900 uppercase tracking-wider">
+      <section className="bg-slate-900/50 backdrop-blur-md border border-white/5 rounded-xl p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-white/10 hover:scale-[1.01] cursor-pointer group">
+        <div className="flex items-center gap-3 mb-6">
+          <Layers className="w-5 h-5 text-slate-400 group-hover:text-[#00ff41] transition-colors" />
+          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wide group-hover:text-slate-300 transition-colors">
             Gossip Engine
           </h2>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-slate-50 rounded-lg p-3 text-center">
-            <p className="text-[10px] text-slate-500 font-mono uppercase">Total Syncs</p>
-            <p className="text-lg font-bold text-slate-900 font-mono">{syncStats.totalSyncs}</p>
+          <div className="bg-black/30 border border-white/5 rounded-lg p-4 text-center transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:bg-white/5 cursor-pointer">
+            <p className="text-[10px] font-semibold text-slate-400 tracking-widest uppercase">Total Syncs</p>
+            <p className="text-base font-bold text-slate-100 font-mono mt-2">{syncStats.totalSyncs}</p>
           </div>
-          <div className="bg-slate-50 rounded-lg p-3 text-center">
-            <p className="text-[10px] text-slate-500 font-mono uppercase">Hashes Exchanged</p>
-            <p className="text-lg font-bold text-slate-900 font-mono">{syncStats.hashesExchanged}</p>
+          <div className="bg-black/30 border border-white/5 rounded-lg p-4 text-center transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:bg-white/5 cursor-pointer">
+            <p className="text-[10px] font-semibold text-slate-400 tracking-widest uppercase">Hashes Exchanged</p>
+            <p className="text-base font-bold text-slate-100 font-mono mt-2">{syncStats.hashesExchanged}</p>
           </div>
-          <div className="bg-slate-50 rounded-lg p-3 text-center">
-            <p className="text-[10px] text-slate-500 font-mono uppercase">Messages Tx</p>
-            <p className="text-lg font-bold text-slate-900 font-mono">{syncStats.messagesTransferred}</p>
+          <div className="bg-black/30 border border-white/5 rounded-lg p-4 text-center transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:bg-white/5 cursor-pointer">
+            <p className="text-[10px] font-semibold text-slate-400 tracking-widest uppercase">Messages Tx</p>
+            <p className="text-base font-bold text-slate-100 font-mono mt-2">{syncStats.messagesTransferred}</p>
           </div>
-          <div className="bg-slate-50 rounded-lg p-3 text-center">
-            <p className="text-[10px] text-slate-500 font-mono uppercase">Last Sync</p>
-            <p className="text-sm font-bold text-slate-900 font-mono">
-              {syncStats.lastSyncAt ? formatLastSeen(syncStats.lastSyncAt) : 'Never'}
+          <div className="bg-black/30 border border-white/5 rounded-lg p-4 text-center transition-all duration-300 hover:shadow-md hover:scale-[1.02] hover:bg-white/5 cursor-pointer">
+            <p className="text-[10px] font-semibold text-slate-400 tracking-widest uppercase">Last Sync</p>
+            <p className="text-base font-bold text-slate-100 font-mono mt-2">
+              {syncStats.lastSyncAt ? formatLastSeen(syncStats.lastSyncAt) : 'NEVER'}
             </p>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Router Config */}
-      <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-        <div className="flex items-center gap-3 mb-4">
-          <Zap className="w-5 h-5 text-slate-700" />
-          <h2 className="text-sm font-bold font-mono text-slate-900 uppercase tracking-wider">
+      <section className="bg-slate-900/50 backdrop-blur-md border border-white/5 rounded-xl p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-white/10 hover:scale-[1.01] cursor-pointer group">
+        <div className="flex items-center gap-3 mb-6">
+          <Zap className="w-5 h-5 text-slate-400 group-hover:text-[#00ff41] transition-colors" />
+          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wide group-hover:text-slate-300 transition-colors">
             Random Walk Router
           </h2>
         </div>
-        <div className="flex flex-wrap items-center gap-4 text-xs font-mono">
-          <div className="flex items-center gap-2">
-            <label className="text-slate-500">Subset Size (k):</label>
+        <div className="flex flex-wrap items-center gap-8">
+          <div className="flex items-center gap-4">
+            <label className="text-sm font-semibold text-slate-400 tracking-wide uppercase">Subset Size (k):</label>
             <input
               type="number"
               min={1}
               max={10}
               value={routerK}
               onChange={(e) => setRouterK(Number(e.target.value))}
-              className="w-16 px-2 py-1 bg-slate-100 rounded border border-slate-200 text-slate-900"
+              className="w-20 bg-black/30 border border-white/5 rounded-lg px-3 py-2 text-base font-bold text-slate-100 font-mono outline-none focus:border-[#00ff41]/50"
             />
           </div>
-          <div className="flex items-center gap-2">
-            <label className="text-slate-500">TTL (hops):</label>
+          <div className="flex items-center gap-4">
+            <label className="text-sm font-semibold text-slate-400 tracking-wide uppercase">TTL (hops):</label>
             <input
               type="number"
               min={1}
               max={50}
               value={routerTTL}
               onChange={(e) => setRouterTTL(Number(e.target.value))}
-              className="w-16 px-2 py-1 bg-slate-100 rounded border border-slate-200 text-slate-900"
+              className="w-20 bg-black/30 border border-white/5 rounded-lg px-3 py-2 text-base font-bold text-slate-100 font-mono outline-none focus:border-[#00ff41]/50"
             />
           </div>
           <button
             onClick={handleUpdateRouterConfig}
-            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-medium transition-colors"
+            className="px-6 py-2 bg-slate-100 hover:bg-white text-slate-900 rounded-lg text-xs font-bold font-mono transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,255,65,0.3)] uppercase"
           >
             Apply
           </button>
         </div>
-      </div>
+      </section>
 
       {/* Peers List */}
-      <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-        <div className="flex items-center gap-3 mb-4">
-          <Users className="w-5 h-5 text-slate-700" />
-          <h2 className="text-sm font-bold font-mono text-slate-900 uppercase tracking-wider">
+      <section className="bg-slate-900/50 backdrop-blur-md border border-white/5 rounded-xl p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-white/10 hover:scale-[1.01] cursor-pointer group">
+        <div className="flex items-center gap-3 mb-6">
+          <Users className="w-5 h-5 text-slate-400 group-hover:text-[#00ff41] transition-colors" />
+          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wide group-hover:text-slate-300 transition-colors">
             Discovered Peers
           </h2>
-          <span className="ml-auto text-[10px] text-slate-500 font-mono">
-            {peers.length} total
+          <span className="ml-auto text-[10px] font-bold font-mono text-slate-500 uppercase tracking-widest bg-black/30 px-2 py-1 rounded border border-white/5">
+            {peers.length} NODES_ACTIVE
           </span>
         </div>
         
         {peers.length === 0 ? (
-          <p className="text-sm text-slate-400 font-mono text-center py-8">
+          <p className="text-sm text-slate-500 font-mono text-center py-12 uppercase tracking-widest bg-black/20 rounded-lg border border-dashed border-white/5">
             No peers discovered. Start discovery to find nearby nodes.
           </p>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-3">
             {peers.map(peer => (
               <div 
                 key={peer.id}
-                className="flex items-center justify-between p-3 bg-slate-50 rounded-lg"
+                className="flex items-center justify-between p-4 bg-black/30 border border-white/5 rounded-lg transition-all duration-300 hover:shadow-md hover:scale-[1.01] hover:bg-white/5 cursor-pointer group/peer"
               >
-                <div className="flex items-center gap-3">
-                  <div className={`w-2 h-2 rounded-full ${
-                    peer.status === 'connected' ? 'bg-emerald-500' : 
-                    peer.status === 'discovered' ? 'bg-amber-500' : 'bg-slate-400'
+                <div className="flex items-center gap-4">
+                  <div className={`w-2.5 h-2.5 rounded-full shadow-[0_0_8px_rgba(0,0,0,0.5)] ${
+                    peer.status === 'connected' ? 'bg-[#00ff41] shadow-[#00ff41]/50' : 
+                    peer.status === 'discovered' ? 'bg-amber-500 shadow-amber-500/50' : 'bg-slate-600'
                   }`} />
                   <div>
-                    <p className="text-xs font-bold text-slate-900 font-mono">{peer.name}</p>
-                    <p className="text-[10px] text-slate-500 font-mono">
-                      {peer.transport.toUpperCase()} • {formatLastSeen(peer.lastSeen)}
-                      {peer.rssi && ` • RSSI ${peer.rssi}dBm`}
+                    <p className="text-sm font-bold text-slate-100 font-mono uppercase">{peer.name}</p>
+                    <p className="text-[10px] font-semibold text-slate-500 font-mono uppercase tracking-tight">
+                      {peer.transport} // {formatLastSeen(peer.lastSeen)}
                     </p>
                   </div>
                 </div>
-                <p className="text-[10px] font-mono text-slate-400">
-                  {peer.id.slice(0, 12)}...
+                <p className="text-[10px] font-mono text-slate-500 group-hover/peer:text-slate-400 transition-colors">
+                  ID: {peer.id.slice(0, 16)}...
                 </p>
               </div>
             ))}
           </div>
         )}
-      </div>
+      </section>
 
       {/* Security Note */}
-      <div className="bg-slate-900 rounded-xl p-5 text-white">
-        <div className="flex items-center gap-3 mb-2">
-          <Lock className="w-5 h-5 text-emerald-400" />
-          <h2 className="text-sm font-bold font-mono uppercase tracking-wider">
-            Mesh Security
+      <section className="bg-[#00ff41]/5 border border-[#00ff41]/10 rounded-xl p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-[#00ff41]/20 hover:scale-[1.01] cursor-pointer group">
+        <div className="flex items-center gap-3 mb-4">
+          <Lock className="w-5 h-5 text-[#00ff41] group-hover:text-emerald-400 transition-colors" />
+          <h2 className="text-sm font-semibold text-[#00ff41] uppercase tracking-wide group-hover:text-emerald-400 transition-colors">
+            Mesh Security protocol
           </h2>
         </div>
-        <ul className="space-y-2 text-[11px] font-mono text-slate-300">
-          <li>• Ed25519 signatures on all messages</li>
-          <li>• Ephemeral keys rotate every 24 hours</li>
-          <li>• AES-GCM session encryption</li>
-          <li>• SHA-256 content addressing (idempotent)</li>
-          <li>• Shamir Secret Sharing for sensitive data</li>
-          <li>• Haversine geofencing (no exact location broadcast)</li>
-          <li>• Grid Cell ID privacy (1km resolution)</li>
-          <li>• Bloom Filter anti-entropy sync</li>
-          <li>• Propagation history loop prevention</li>
+        <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-[11px] font-bold font-mono text-slate-400 uppercase tracking-tight">
+          <li className="flex items-center gap-2 text-emerald-500/80"><Shield className="w-3 h-3" /> Ed25519 signatures active</li>
+          <li className="flex items-center gap-2"><div className="w-1 h-1 bg-slate-600 rounded-full" /> Ephemeral keys rotate 24h</li>
+          <li className="flex items-center gap-2"><div className="w-1 h-1 bg-slate-600 rounded-full" /> AES-GCM session encryption</li>
+          <li className="flex items-center gap-2"><div className="w-1 h-1 bg-slate-600 rounded-full" /> SHA-256 content addressing</li>
+          <li className="flex items-center gap-2"><div className="w-1 h-1 bg-slate-600 rounded-full" /> Shamir Secret Sharing</li>
+          <li className="flex items-center gap-2"><div className="w-1 h-1 bg-slate-600 rounded-full" /> Haversine geofencing</li>
         </ul>
-      </div>
+      </section>
     </div>
   );
 }

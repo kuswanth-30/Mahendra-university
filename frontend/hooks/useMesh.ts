@@ -18,6 +18,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { meshNode } from '@/lib/services/meshNode.js';
+import { useOfflineStatus } from './useOfflineStatus';
 
 interface PeerInfo {
   id: string;
@@ -58,21 +59,7 @@ export function useMesh(): UseMeshReturn {
   const [nodeId, setNodeId] = useState<string | null>(null);
   const [status, setStatus] = useState<'idle' | 'connecting' | 'connected' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
-
-  // Initialize mesh on mount
-  useEffect(() => {
-    // Check if already initialized
-    if (meshNode.isInitialized) {
-      setIsInitialized(true);
-      setNodeId(meshNode.nodeId);
-      refreshPeerState();
-      setupListeners();
-      return;
-    }
-
-    // Auto-initialize
-    initialize();
-  }, []);
+  const { isOnline } = useOfflineStatus();
 
   // Set up meshNode event listeners
   const setupListeners = useCallback(() => {
@@ -103,6 +90,18 @@ export function useMesh(): UseMeshReturn {
     });
   }, []);
 
+  // Refresh peer state from meshNode
+  const refreshPeerState = useCallback(() => {
+    const connectedPeers = meshNode.getConnectedPeers();
+    const allPeers = meshNode.getPeers();
+    
+    setPeers(connectedPeers);
+    setDiscoveredPeers(allPeers);
+    setPeerCount(connectedPeers.length);
+    setDiscoveredCount(allPeers.length);
+    setIsConnected(connectedPeers.length > 0);
+  }, []);
+
   // Initialize mesh node
   const initialize = useCallback(async () => {
     setStatus('connecting');
@@ -129,19 +128,44 @@ export function useMesh(): UseMeshReturn {
       setStatus('error');
       setError(err.message);
     }
-  }, [setupListeners]);
+  }, [setupListeners, refreshPeerState]);
 
-  // Refresh peer state from meshNode
-  const refreshPeerState = useCallback(() => {
-    const connectedPeers = meshNode.getConnectedPeers();
-    const allPeers = meshNode.getPeers();
-    
-    setPeers(connectedPeers);
-    setDiscoveredPeers(allPeers);
-    setPeerCount(connectedPeers.length);
-    setDiscoveredCount(allPeers.length);
-    setIsConnected(connectedPeers.length > 0);
+  // Initialize mesh on mount
+  useEffect(() => {
+    // Check if already initialized
+    if (meshNode.isInitialized) {
+      setIsInitialized(true);
+      setNodeId(meshNode.nodeId);
+      refreshPeerState();
+      setupListeners();
+      return;
+    }
+
+    // Auto-initialize
+    initialize();
   }, []);
+
+  // Auto-retry when network connection is restored
+  useEffect(() => {
+    let retryInterval: NodeJS.Timeout;
+
+    if (isOnline && !isInitialized && status === 'error') {
+      console.log('404 FOUND: [useMesh] Network restored, auto-retrying mesh initialization...');
+      initialize();
+    }
+
+    // Periodic retry if stuck in error or idle while online
+    if (isOnline && !isInitialized && (status === 'error' || status === 'idle')) {
+      retryInterval = setInterval(() => {
+        console.log('404 FOUND: [useMesh] Periodic retry of mesh initialization...');
+        initialize();
+      }, 15000); // Retry every 15 seconds
+    }
+
+    return () => {
+      if (retryInterval) clearInterval(retryInterval);
+    };
+  }, [isOnline, isInitialized, status, initialize]);
 
   // Manual refresh
   const refreshPeers = useCallback(() => {

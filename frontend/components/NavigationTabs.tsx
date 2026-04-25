@@ -22,7 +22,7 @@ export default function NavigationTabs({ activeTab, onTabChange }: NavigationTab
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
             type="button"
-            className={`px-6 py-4 text-xs font-bold transition-all relative z-10 cursor-pointer ${
+            className={`px-6 py-4 text-2xl font-bold tracking-wide transition-all relative z-10 cursor-pointer ${
               activeTab === tab.id
                 ? 'text-cyan-400'
                 : 'text-slate-400 hover:text-slate-200'

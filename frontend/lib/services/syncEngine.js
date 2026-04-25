@@ -23,6 +23,51 @@ class SyncEngine {
     this.maxRetries = 3;
     this.ourNodeId = null; // Our node ID for loop prevention
     this.maxHistoryLength = 20; // Max peers in history header
+    this.state = 'IDLE';
+    this.subscribers = new Set();
+  }
+
+  /**
+   * getStats(): Get current sync statistics
+   * @returns {Object} Sync statistics
+   */
+  getStats() {
+    return {
+      state: this.state,
+      pendingCount: 0, // Placeholder
+      failedCount: 0,  // Placeholder
+      processingCount: this.activeHandshakes.size,
+      errors: []
+    };
+  }
+
+  /**
+   * subscribe(callback): Subscribe to sync engine updates
+   * @param {Function} callback - Callback function
+   * @returns {Function} Unsubscribe function
+   */
+  subscribe(callback) {
+    this.subscribers.add(callback);
+    callback(this.getStats());
+    return () => this.subscribers.delete(callback);
+  }
+
+  /**
+   * notifySubscribers(): Notify all subscribers of state changes
+   * @private
+   */
+  _notifySubscribers() {
+    const stats = this.getStats();
+    this.subscribers.forEach(callback => callback(stats));
+  }
+
+  /**
+   * setState(state): Update engine state
+   * @param {string} state - New state
+   */
+  setState(state) {
+    this.state = state;
+    this._notifySubscribers();
   }
 
   /**

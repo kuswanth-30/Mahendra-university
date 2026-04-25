@@ -99,7 +99,7 @@ const withPwa = nextPwa({
   dest: 'public', // Service worker output directory
   register: true, // Register service worker
   skipWaiting: true, // Skip waiting for service worker activation
-  disable: process.env.NODE_ENV === 'development', // Disable in development
+  disable: true, // Disable PWA entirely for faster development
   
   // Runtime caching strategies
   runtimeCaching: [

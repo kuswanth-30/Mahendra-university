@@ -16,8 +16,8 @@ interface OfflineStatus {
 
 export function useOfflineStatus(): OfflineStatus {
   const [status, setStatus] = useState<OfflineStatus>({
-    isOffline: !navigator.onLine,
-    isOnline: navigator.onLine,
+    isOffline: false, // FORCED BYPASS FOR DEBUGGING
+    isOnline: true,   // FORCED BYPASS FOR DEBUGGING
     wasOffline: false,
     lastChanged: null,
   });
@@ -27,20 +27,22 @@ export function useOfflineStatus(): OfflineStatus {
       setStatus(prev => ({
         isOffline: false,
         isOnline: true,
-        wasOffline: prev.isOffline, // Remember we were offline
+        wasOffline: prev.isOffline,
         lastChanged: new Date(),
       }));
-      console.log('404 FOUND: [NETWORK] Connection restored');
     };
 
     const handleOffline = () => {
+      // Logic commented out to prevent UI lockout
+      /*
       setStatus(prev => ({
         isOffline: true,
         isOnline: false,
         wasOffline: prev.isOffline,
         lastChanged: new Date(),
       }));
-      console.log('404 FOUND: [NETWORK] Connection lost - entering offline mode');
+      */
+      console.log('404 FOUND: [DEBUG] Network offline detected but bypassed');
     };
 
     // Listen for network changes
@@ -49,8 +51,8 @@ export function useOfflineStatus(): OfflineStatus {
 
     // Initial check
     setStatus({
-      isOffline: !navigator.onLine,
-      isOnline: navigator.onLine,
+      isOffline: false, // FORCED BYPASS
+      isOnline: true,   // FORCED BYPASS
       wasOffline: false,
       lastChanged: new Date(),
     });

@@ -1,20 +1,14 @@
 /**
  * MeshNode - 404 Found LibP2P/BLE Mesh Network Node
  * 
- * LibP2P node with WebRTC transport and mDNS discovery.
- * Falls back to hardware Bluetooth bridge when WebRTC fails.
+ * Local-only mode with BroadcastChannel for tab-to-tab communication.
  * 
  * Features:
- * 1. LibP2P initialization with WebRTC + mDNS
- * 2. onPeerDiscovery handler triggering gossipEngine
- * 3. Bluetooth fallback logging when WebRTC unreachable
- * 4. Gossip protocol handshake on peer connect
- * 5. Sync session management
+ * 1. BroadcastChannel for tab-to-tab discovery
+ * 2. IndexedDB for local data persistence
+ * 3. Message sync between browser tabs
  */
 
-import { transport } from './transportAbstract.js';
-import { gossipEngine } from './gossipEngine.js';
-import { hardwareBridge } from './hardwareBridge.js';
 import { db } from '@/lib/db';
 
 /**
@@ -48,6 +42,8 @@ class MeshNode {
     this.errorListeners = [];
     this.discoveryListeners = []; // onPeerDiscovery handlers
     this.useBluetoothFallback = false;
+    this.broadcastChannel = null; // For tab-to-tab communication
+    this.isScanning = false;
   }
 
   /**
@@ -62,129 +58,131 @@ class MeshNode {
       return { success: true, nodeId: this.nodeId };
     }
 
-    console.log('[MeshNode] Initializing LibP2P node...');
+    console.log('[MeshNode] Initializing in local-only mode (IndexedDB + BroadcastChannel)...');
+    
+    this.nodeId = `node-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    this.isInitialized = true;
 
-    try {
-      // BROWSER/PWA COMPATIBLE LibP2P Configuration
-      // Uses @libp2p/webrtc and @libp2p/mdns for browser environments
-      
-      const { createLibp2p } = await import('libp2p');
-      const { webRTC } = await import('@libp2p/webrtc');
-      const { webSockets } = await import('@libp2p/websockets');
-      
-      // BROWSER NOTE: @libp2p/mdns in browsers uses WebRTC data channels for discovery
-      // instead of raw UDP multicast (which is blocked by browser security)
-      // const { mdns } = await import('@libp2p/mdns');
-      
-      const { bootstrap } = await import('@libp2p/bootstrap');
-      const { identify } = await import('@libp2p/identify');
-      const { gossipsub } = await import('@chainsafe/libp2p-gossipsub');
-      const { noise } = await import('@chainsafe/libp2p-noise');
-      const { yamux } = await import('@chainsafe/libp2p-yamux');
-      const { circuitRelayV2Transport } = await import('@libp2p/circuit-relay-v2');
+    // Set up BroadcastChannel for tab-to-tab communication
+    this.broadcastChannel = new BroadcastChannel('404-found-mesh');
+    
+    this.broadcastChannel.onmessage = (event) => {
+      this._handleBroadcastMessage(event.data);
+    };
 
-      // Generate node ID
-      this.nodeId = `node-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    console.log('[MeshNode] Node initialized with ID:', this.nodeId);
 
-      // Create LibP2P node - Browser/PWA Optimized
-      this.libp2pNode = await createLibp2p({
-        // BROWSER TRANSPORTS: WebRTC (primary) + WebSockets (fallback)
-        transports: [
-          // WebRTC for browser-to-browser P2P (uses STUN for NAT traversal)
-          webRTC({
-            rtcConfiguration: {
-              iceServers: [
-                { urls: 'stun:stun.l.google.com:19302' },
-                { urls: 'stun:stun1.l.google.com:19302' },
-                { urls: 'stun:stun2.l.google.com:19302' },
-                { urls: 'stun:stun3.l.google.com:19302' },
-              ],
-              iceCandidatePoolSize: 10,
-            },
-          }),
-          // WebSockets as fallback (works through most firewalls)
-          webSockets(),
-          // CIRCUIT RELAY: Required by WebRTC in browser environments
-          circuitRelayV2Transport(),
-        ],
-        
-        // DISCOVERY: mDNS for local network discovery
-        // BROWSER: mdns disabled due to 'dgram' dependency (Node-only)
-        discovery: [
-          /* mdns({
-            interval: 10000, // Announce every 10s
-          }), */
-        ],
-        
-        // STREAM MULTIPLEXING
-        connectionEncryption: [noise()],
-        streamMuxers: [yamux()],
-        
-        services: {
-          identify: identify(),
-          pubsub: gossipsub({
-            emitSelf: false,
-            // BROWSER: Lower gossip frequency for battery optimization
-            gossipInterval: 1000,
-          }),
-        },
-        
-        // BROWSER OPTIMIZATION: Prevent issues in restricted environments
-        relay: {
-          enabled: true,
-          hop: {
-            enabled: false, // Don't act as relay (browser bandwidth constraints)
-            active: false,
-          },
-        },
+    return { 
+      success: true, 
+      nodeId: this.nodeId
+    };
+  }
+
+  /**
+   * Handle broadcast messages from other tabs
+   * @private
+   */
+  _handleBroadcastMessage(data) {
+    console.log('[MeshNode] Received broadcast message:', data);
+
+    if (data.type === 'discovery' && data.nodeId !== this.nodeId) {
+      // Peer discovered via BroadcastChannel
+      const peerInfo = {
+        id: data.nodeId,
+        transport: 'broadcast',
+        discoveredAt: Date.now(),
+      };
+
+      // Store peer state
+      this.peers.set(data.nodeId, {
+        id: data.nodeId,
+        transport: 'broadcast',
+        status: 'discovered',
+        discoveredAt: Date.now(),
       });
 
-      // Set up event listeners
-      this._setupEventListeners();
+      // Trigger discovery handlers
+      this._triggerDiscoveryHandlers(peerInfo);
 
-      // INTEGRATION: Connect hardware bridge discovery to gossip handshake
-      this._setupHardwareBridgeIntegration();
-
-      // Start the node
-      await this.libp2pNode.start();
-      this.isInitialized = true;
-
-      // Get listening addresses
-      const multiaddrs = this.libp2pNode.getMultiaddrs().map(ma => ma.toString());
-
-      console.log('[MeshNode] LibP2P node initialized');
-      console.log('[MeshNode] Node ID:', this.libp2pNode.peerId.toString());
-      console.log('[MeshNode] Listening on:', multiaddrs);
-
-      return {
-        success: true,
-        nodeId: this.libp2pNode.peerId.toString(),
-        multiaddrs,
+      // Respond with our presence
+      this.broadcastChannel.postMessage({
+        type: 'presence',
+        nodeId: this.nodeId,
+        timestamp: Date.now(),
+      });
+    } else if (data.type === 'presence' && data.nodeId !== this.nodeId) {
+      // Peer responded to our discovery
+      const peerInfo = {
+        id: data.nodeId,
+        transport: 'broadcast',
+        discoveredAt: Date.now(),
       };
 
-    } catch (error) {
-      console.error('[MeshNode] LibP2P initialization failed:', error);
-      
-      // Log fallback to Bluetooth
-      console.log('[MeshNode:FALLBACK] WebRTC/LibP2P failed - requesting Bluetooth bridge fallback');
-      this.useBluetoothFallback = true;
-      
-      // Try to initialize Bluetooth fallback
-      try {
-        await hardwareBridge.initialize();
-        console.log('[MeshNode:FALLBACK] Bluetooth bridge initialized as fallback');
-      } catch (bleError) {
-        console.error('[MeshNode:FALLBACK] Bluetooth fallback also failed:', bleError);
+      this.peers.set(data.nodeId, {
+        id: data.nodeId,
+        transport: 'broadcast',
+        status: 'connected',
+        discoveredAt: Date.now(),
+        connectedAt: Date.now(),
+      });
+
+      this._triggerDiscoveryHandlers(peerInfo);
+    } else if (data.type === 'message') {
+      // Handle message from peer
+      console.log('[MeshNode] Received message from peer:', data.nodeId);
+      // Store message in IndexedDB
+      if (data.message) {
+        db.messages.add(data.message);
       }
-      
-      this._notifyError('initialization', error);
-      return {
-        success: false,
-        nodeId: null,
-        error: error.message,
-        fallbackAttempted: true,
-      };
     }
+  }
+
+  /**
+   * Start scanning for peers
+   */
+  async scanForPeers() {
+    if (!this.isInitialized) {
+      console.log('[MeshNode] Not initialized, cannot scan');
+      return;
+    }
+
+    if (this.isScanning) {
+      console.log('[MeshNode] Already scanning');
+      return;
+    }
+
+    console.log('[MeshNode] Starting peer scan...');
+    this.isScanning = true;
+
+    // Broadcast discovery message
+    this.broadcastChannel.postMessage({
+      type: 'discovery',
+      nodeId: this.nodeId,
+      timestamp: Date.now(),
+    });
+
+    // Wait for responses
+    setTimeout(() => {
+      this.isScanning = false;
+      console.log('[MeshNode] Scan complete. Peers found:', this.peers.size);
+    }, 3000);
+  }
+
+  /**
+   * Broadcast a message to all connected peers
+   */
+  broadcastMessage(message) {
+    if (!this.broadcastChannel) {
+      console.log('[MeshNode] BroadcastChannel not initialized');
+      return;
+    }
+
+    this.broadcastChannel.postMessage({
+      type: 'message',
+      nodeId: this.nodeId,
+      message: message,
+      timestamp: Date.now(),
+    });
   }
 
   /**

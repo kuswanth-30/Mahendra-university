@@ -111,159 +111,161 @@ export default function Settings() {
       <ToastContainer toasts={toasts} onDismiss={dismissToast} />
 
       {/* Identity */}
-      <section className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-        <div className="flex items-center gap-3 mb-4">
-          <Key className="w-5 h-5 text-slate-700" />
-          <h2 className="text-sm font-bold font-mono text-slate-900 uppercase tracking-wider">
+      <section className="bg-slate-900/50 backdrop-blur-md border border-white/5 rounded-xl p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-white/10 hover:scale-[1.01] cursor-pointer group">
+        <div className="flex items-center gap-3 mb-6">
+          <Key className="w-5 h-5 text-slate-400 group-hover:text-[#00ff41] transition-colors" />
+          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wide group-hover:text-slate-300 transition-colors">
             Ephemeral Identity
           </h2>
         </div>
-        <div className="space-y-3 text-xs font-mono">
-          <div className="flex justify-between items-center py-2 border-b border-slate-100">
-            <span className="text-slate-500">Status</span>
-            <span className={`font-bold ${isInitialized ? 'text-emerald-600' : 'text-amber-600'}`}>
-              {isInitialized ? 'Initialized' : 'Pending'}
+        <div className="grid grid-cols-1 gap-4">
+          <div className="grid grid-cols-2 items-center py-3 border-b border-white/5">
+            <span className="text-sm font-semibold text-slate-400 tracking-wide uppercase">Status</span>
+            <span className={`text-base font-bold font-mono ${isInitialized ? 'text-[#00ff41]' : 'text-amber-500'}`}>
+              {isInitialized ? 'INITIALIZED' : 'PENDING'}
             </span>
           </div>
-          <div className="py-2 border-b border-slate-100">
-            <span className="text-slate-500 block mb-1">Public Key (Ed25519)</span>
-            <code className="block bg-slate-100 px-3 py-2 rounded-lg text-slate-900 break-all">
-              {truncate(publicKey)}
+          <div className="py-3 border-b border-white/5">
+            <span className="text-sm font-semibold text-slate-400 tracking-wide uppercase block mb-2">Public Key (Ed25519)</span>
+            <code className="block bg-black/30 px-4 py-3 rounded-lg text-base font-bold text-slate-100 font-mono break-all border border-white/5">
+              {truncate(publicKey, 32)}
             </code>
           </div>
-          <div className="flex justify-between items-center py-2 border-b border-slate-100">
-            <span className="text-slate-500">Key Rotation</span>
-            <span className="text-slate-900">Every 24 hours</span>
+          <div className="grid grid-cols-2 items-center py-3 border-b border-white/5">
+            <span className="text-sm font-semibold text-slate-400 tracking-wide uppercase">Key Rotation</span>
+            <span className="text-base font-bold text-slate-100 font-mono uppercase">Every 24 hours</span>
           </div>
-          <div className="flex justify-between items-center py-2">
-            <span className="text-slate-500">Private Key Storage</span>
-            <span className="text-emerald-600 font-bold">In-memory only</span>
+          <div className="grid grid-cols-2 items-center py-3">
+            <span className="text-sm font-semibold text-slate-400 tracking-wide uppercase">Private Key Storage</span>
+            <span className="text-[#00ff41] text-base font-bold font-mono uppercase">In-memory only</span>
           </div>
         </div>
         <button
           onClick={handleRotateKeys}
-          className="mt-4 px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg text-xs font-medium font-mono transition-colors"
+          className="mt-6 px-6 py-2 bg-slate-100 hover:bg-white text-slate-900 rounded-lg text-xs font-bold font-mono transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,255,65,0.3)] hover:scale-[1.02] cursor-pointer flex items-center gap-2"
         >
-          <RefreshCw className="w-3 h-3 inline mr-2" />
-          Rotate Keys Now
+          <RefreshCw className="w-3 h-3" />
+          ROTATE_KEYS_NOW
         </button>
       </section>
 
       {/* Transport */}
-      <section className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-        <div className="flex items-center gap-3 mb-4">
-          <Radio className="w-5 h-5 text-slate-700" />
-          <h2 className="text-sm font-bold font-mono text-slate-900 uppercase tracking-wider">
+      <section className="bg-slate-900/50 backdrop-blur-md border border-white/5 rounded-xl p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-white/10 hover:scale-[1.01] cursor-pointer group">
+        <div className="flex items-center gap-3 mb-6">
+          <Radio className="w-5 h-5 text-slate-400 group-hover:text-[#00ff41] transition-colors" />
+          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wide group-hover:text-slate-300 transition-colors">
             Transport Layer
           </h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <button
             onClick={() => handleSetTransport('ble')}
-            className={`flex items-center gap-3 p-4 rounded-xl border transition-all ${
+            className={`flex items-center gap-3 p-5 rounded-xl border transition-all duration-300 cursor-pointer ${
               activeTransport === 'BluetoothLEAdapter'
-                ? 'bg-blue-50 border-blue-300 text-blue-700'
-                : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                ? 'bg-[#00ff41]/10 border-[#00ff41]/30 text-[#00ff41] shadow-[0_0_15px_rgba(0,255,65,0.1)]'
+                : 'bg-white/5 border-white/5 text-slate-400 hover:bg-white/10 hover:border-white/20'
             }`}
           >
             <Bluetooth className="w-5 h-5" />
             <div className="text-left">
-              <p className="text-xs font-bold font-mono">Bluetooth LE</p>
-              <p className="text-[10px] text-slate-500 font-mono">Mobile native</p>
+              <p className="text-sm font-bold font-mono uppercase">Bluetooth LE</p>
+              <p className="text-[10px] opacity-60 font-mono uppercase">Mobile native</p>
             </div>
           </button>
           <button
             onClick={() => handleSetTransport('webrtc')}
-            className={`flex items-center gap-3 p-4 rounded-xl border transition-all ${
+            className={`flex items-center gap-3 p-5 rounded-xl border transition-all duration-300 cursor-pointer ${
               activeTransport === 'WebRTCAdapter'
-                ? 'bg-emerald-50 border-emerald-300 text-emerald-700'
-                : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-50'
+                ? 'bg-[#00ff41]/10 border-[#00ff41]/30 text-[#00ff41] shadow-[0_0_15px_rgba(0,255,65,0.1)]'
+                : 'bg-white/5 border-white/5 text-slate-400 hover:bg-white/10 hover:border-white/20'
             }`}
           >
             <Globe className="w-5 h-5" />
             <div className="text-left">
-              <p className="text-xs font-bold font-mono">WebRTC</p>
-              <p className="text-[10px] text-slate-500 font-mono">Browser tab-to-tab</p>
+              <p className="text-sm font-bold font-mono uppercase">WebRTC</p>
+              <p className="text-[10px] opacity-60 font-mono uppercase">Browser tab-to-tab</p>
             </div>
           </button>
         </div>
       </section>
 
       {/* Geospatial */}
-      <section className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-        <div className="flex items-center gap-3 mb-4">
-          <MapPin className="w-5 h-5 text-slate-700" />
-          <h2 className="text-sm font-bold font-mono text-slate-900 uppercase tracking-wider">
+      <section className="bg-slate-900/50 backdrop-blur-md border border-white/5 rounded-xl p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-white/10 hover:scale-[1.01] cursor-pointer group">
+        <div className="flex items-center gap-3 mb-6">
+          <MapPin className="w-5 h-5 text-slate-400 group-hover:text-[#00ff41] transition-colors" />
+          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wide group-hover:text-slate-300 transition-colors">
             Geospatial Filtering
           </h2>
         </div>
-        <div className="space-y-3">
-          <div className="flex justify-between items-center text-xs font-mono">
-            <span className="text-slate-500">Current Location</span>
-            <span className="text-slate-900">
-              {location ? `${location.lat.toFixed(4)}, ${location.long.toFixed(4)}` : 'Not set'}
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 items-center py-3 border-b border-white/5">
+            <span className="text-sm font-semibold text-slate-400 tracking-wide uppercase">Current Location</span>
+            <span className="text-base font-bold text-slate-100 font-mono uppercase">
+              {location ? `${location.lat.toFixed(4)}, ${location.long.toFixed(4)}` : 'NOT_SET'}
             </span>
           </div>
-          <div className="flex items-center gap-3">
-            <label className="text-xs text-slate-500 font-mono">Grid Cell Size (degrees):</label>
-            <input
-              type="number"
-              step={0.001}
-              value={gridCellSize}
-              onChange={(e) => setGridCellSize(Number(e.target.value))}
-              className="w-24 px-2 py-1 bg-slate-100 rounded border border-slate-200 text-xs font-mono"
-            />
-            <button
-              onClick={handleSetGridCellSize}
-              className="px-3 py-1 bg-slate-900 text-white rounded text-[10px] font-mono"
-            >
-              Apply
-            </button>
+          <div className="flex items-center gap-4 py-2">
+            <label className="text-sm font-semibold text-slate-400 tracking-wide uppercase">Grid Cell Size:</label>
+            <div className="flex items-center gap-2 flex-1">
+              <input
+                type="number"
+                step={0.001}
+                value={gridCellSize}
+                onChange={(e) => setGridCellSize(Number(e.target.value))}
+                className="flex-1 bg-black/30 border border-white/5 rounded-lg px-3 py-2 text-base font-bold text-slate-100 font-mono outline-none focus:border-[#00ff41]/50"
+              />
+              <button
+                onClick={handleSetGridCellSize}
+                className="px-4 py-2 bg-slate-100 hover:bg-white text-slate-900 rounded-lg text-[10px] font-bold font-mono transition-all duration-300 uppercase"
+              >
+                Apply
+              </button>
+            </div>
           </div>
           <button
             onClick={handleGetLocation}
-            className="w-full px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 rounded-lg text-xs font-medium font-mono transition-colors"
+            className="w-full px-6 py-3 bg-[#00ff41]/10 hover:bg-[#00ff41]/20 text-[#00ff41] border border-[#00ff41]/30 rounded-lg text-xs font-bold font-mono transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,255,65,0.2)] flex items-center justify-center gap-2"
           >
-            <MapPin className="w-3 h-3 inline mr-2" />
-            Update Location from GPS
+            <MapPin className="w-4 h-4" />
+            UPDATE_LOCATION_FROM_GPS
           </button>
         </div>
       </section>
 
       {/* Router Config */}
-      <section className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-        <div className="flex items-center gap-3 mb-4">
-          <SettingsIcon className="w-5 h-5 text-slate-700" />
-          <h2 className="text-sm font-bold font-mono text-slate-900 uppercase tracking-wider">
+      <section className="bg-slate-900/50 backdrop-blur-md border border-white/5 rounded-xl p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-white/10 hover:scale-[1.01] cursor-pointer group">
+        <div className="flex items-center gap-3 mb-6">
+          <SettingsIcon className="w-5 h-5 text-slate-400 group-hover:text-[#00ff41] transition-colors" />
+          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wide group-hover:text-slate-300 transition-colors">
             Random Walk Router
           </h2>
         </div>
-        <div className="flex flex-wrap items-center gap-4 text-xs font-mono">
-          <div className="flex items-center gap-2">
-            <label className="text-slate-500">Subset Size (k):</label>
+        <div className="flex flex-wrap items-center gap-6">
+          <div className="flex items-center gap-3">
+            <label className="text-sm font-semibold text-slate-400 tracking-wide uppercase">Subset Size (k):</label>
             <input
               type="number"
               min={1}
               max={10}
               value={routerK}
               onChange={(e) => setRouterK(Number(e.target.value))}
-              className="w-16 px-2 py-1 bg-slate-100 rounded border border-slate-200"
+              className="w-20 bg-black/30 border border-white/5 rounded-lg px-3 py-2 text-base font-bold text-slate-100 font-mono outline-none focus:border-[#00ff41]/50"
             />
           </div>
-          <div className="flex items-center gap-2">
-            <label className="text-slate-500">Default TTL:</label>
+          <div className="flex items-center gap-3">
+            <label className="text-sm font-semibold text-slate-400 tracking-wide uppercase">Default TTL:</label>
             <input
               type="number"
               min={1}
               max={50}
               value={routerTTL}
               onChange={(e) => setRouterTTL(Number(e.target.value))}
-              className="w-16 px-2 py-1 bg-slate-100 rounded border border-slate-200"
+              className="w-20 bg-black/30 border border-white/5 rounded-lg px-3 py-2 text-base font-bold text-slate-100 font-mono outline-none focus:border-[#00ff41]/50"
             />
           </div>
           <button
             onClick={handleUpdateRouterConfig}
-            className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-lg transition-colors"
+            className="px-6 py-2 bg-slate-100 hover:bg-white text-slate-900 rounded-lg text-xs font-bold font-mono transition-all duration-300 hover:shadow-[0_0_15px_rgba(0,255,65,0.3)] uppercase"
           >
             Apply
           </button>
@@ -271,41 +273,41 @@ export default function Settings() {
       </section>
 
       {/* Data Management */}
-      <section className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-        <div className="flex items-center gap-3 mb-4">
-          <Database className="w-5 h-5 text-slate-700" />
-          <h2 className="text-sm font-bold font-mono text-slate-900 uppercase tracking-wider">
+      <section className="bg-slate-900/50 backdrop-blur-md border border-white/5 rounded-xl p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-white/10 hover:scale-[1.01] cursor-pointer group">
+        <div className="flex items-center gap-3 mb-6">
+          <Database className="w-5 h-5 text-slate-400 group-hover:text-[#00ff41] transition-colors" />
+          <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wide group-hover:text-slate-300 transition-colors">
             Local Data
           </h2>
         </div>
-        <div className="flex justify-between items-center text-xs font-mono mb-4">
-          <span className="text-slate-500">Stored Messages</span>
-          <span className="text-slate-900 font-bold">{messageCount}</span>
+        <div className="grid grid-cols-2 items-center py-3 border-b border-white/5 mb-6">
+          <span className="text-sm font-semibold text-slate-400 tracking-wide uppercase">Stored Messages</span>
+          <span className="text-base font-bold text-slate-100 font-mono">{messageCount}</span>
         </div>
         <button
           onClick={handleClearMessages}
-          className="w-full px-4 py-2 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-lg text-xs font-medium font-mono transition-colors"
+          className="w-full px-6 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg text-xs font-bold font-mono transition-all duration-300 hover:shadow-[0_0_15px_rgba(239,68,68,0.2)] flex items-center justify-center gap-2 uppercase"
         >
-          <Trash2 className="w-3 h-3 inline mr-2" />
+          <Trash2 className="w-4 h-4" />
           Clear All Messages
         </button>
       </section>
 
       {/* Security */}
-      <section className="bg-red-50 border border-red-200 rounded-xl p-5">
+      <section className="bg-red-500/5 border border-red-500/20 rounded-xl p-6 shadow-sm transition-all duration-300 hover:shadow-lg hover:border-red-500/40 hover:scale-[1.01] cursor-pointer group">
         <div className="flex items-center gap-3 mb-4">
-          <Shield className="w-5 h-5 text-red-600" />
-          <h2 className="text-sm font-bold font-mono text-red-700 uppercase tracking-wider">
-            Security
+          <Shield className="w-5 h-5 text-red-500 group-hover:text-red-400 transition-colors" />
+          <h2 className="text-sm font-semibold text-red-500 uppercase tracking-wide group-hover:text-red-400 transition-colors">
+            Security Protocol
           </h2>
         </div>
-        <p className="text-xs text-red-600 font-mono mb-4">
+        <p className="text-xs font-mono text-red-400/80 mb-6 leading-relaxed uppercase tracking-tight">
           Emergency wipe deletes all local data, keys, and session state. 
           Use the shield button (bottom-right) with long-press to activate.
         </p>
-        <div className="flex items-center gap-2 text-xs text-red-600 font-mono">
+        <div className="flex items-center gap-3 text-[10px] font-bold font-mono text-red-500 uppercase tracking-widest bg-red-500/10 p-3 rounded-lg border border-red-500/20">
           <AlertTriangle className="w-4 h-4" />
-          <span>Long-press the shield icon for 3 seconds to trigger wipe</span>
+          <span>Long-press shield icon for 3s to trigger wipe</span>
         </div>
       </section>
     </div>

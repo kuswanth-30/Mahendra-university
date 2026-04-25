@@ -4,34 +4,63 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #0f172a;
-  --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #0f172a;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #f1f5f9;
-  --accent-foreground: #0f172a;
-  --destructive: #ef4444;
+  --background: #000000;
+  --foreground: #e5e7eb;
+  --card: #0a0a0a;
+  --card-foreground: #e5e7eb;
+  --popover: #0a0a0a;
+  --popover-foreground: #e5e7eb;
+  --primary: #00ff41;
+  --primary-foreground: #000000;
+  --secondary: #1f2937;
+  --secondary-foreground: #e5e7eb;
+  --muted: #111827;
+  --muted-foreground: #9ca3af;
+  --accent: #00ff41;
+  --accent-foreground: #000000;
+  --destructive: #ff003c;
   --destructive-foreground: #ffffff;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #94a3b8;
+  --border: #1f2937;
+  --input: #1f2937;
+  --ring: #00ff41;
   --radius: 0.5rem;
 }
 
 .dark {
-  --background: #f8fafc;
+  --background: #000000;
+  --foreground: #e5e7eb;
+  --card: #0a0a0a;
+  --card-foreground: #e5e7eb;
+  --border: #1f2937;
+}
+
+.light {
+  --background: #ffffff;
   --foreground: #0f172a;
-  --card: #ffffff;
+  --card: #f8fafc;
   --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --primary: #00ff41;
+  --primary-foreground: #000000;
+  --secondary: #e2e8f0;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #00ff41;
+  --accent-foreground: #000000;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
   --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #00ff41;
+}
+
+/* Terminal Green Color */
+@theme inline {
+  --color-terminal-green: #00ff41;
+  --color-cyber-red: #ff003c;
+  --color-cyber-amber: #ffcc00;
 }
 
 @theme inline {
@@ -78,8 +107,35 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply font-mono antialiased;
+    background-color: var(--background);
+    color: var(--foreground);
   }
+}
+
+/* Midnight Terminal Glassmorphism */
+.glass {
+  @apply backdrop-blur-md border-b border-terminal-green/30;
+  background-color: color-mix(in srgb, var(--background) 70%, transparent);
+}
+
+/* Terminal Card Effect */
+.vault-card {
+  @apply border hover:border-terminal-green hover:shadow-[0_0_15px_rgba(0,255,65,0.2)] transition-all duration-300;
+  background-color: var(--card);
+  border-color: var(--border);
+}
+
+/* Shimmer Animation */
+@keyframes shimmer {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.3; }
+}
+
+.animate-shimmer {
+  @apply animate-pulse bg-gray-900;
 }

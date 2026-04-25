@@ -86,7 +86,7 @@ export default function OutboxStatus() {
             >
               <div className="flex items-center gap-3 font-mono">
                 <span className="text-xs text-slate-600">
-                  {item.actionType}
+                  {item.status}
                 </span>
                 {item.retryCount > 0 && (
                   <span className="text-[10px] text-slate-400">
@@ -95,7 +95,7 @@ export default function OutboxStatus() {
                 )}
               </div>
               <div className="flex items-center gap-2">
-                {item.status === 'FAILED' && (
+                {item.status === 'failed' && (
                   <button
                     onClick={() => retryItem(item.id!)}
                     className="text-xs text-slate-600 hover:text-slate-900 font-medium font-mono"
@@ -104,8 +104,8 @@ export default function OutboxStatus() {
                   </button>
                 )}
                 <div className={`w-2 h-2 rounded-full ${
-                  item.status === 'PENDING' ? 'bg-emerald-500' :
-                  item.status === 'PROCESSING' ? 'bg-blue-500 animate-pulse' :
+                  item.status === 'pending' ? 'bg-emerald-500' :
+                  item.status === 'processing' ? 'bg-blue-500 animate-pulse' :
                   'bg-red-500'
                 }`} />
               </div>

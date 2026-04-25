@@ -61,6 +61,11 @@ export default function ContentCard({
 }: ContentCardProps) {
   const [displayContent, setDisplayContent] = useState({ title, description, isEncrypted: false });
   const [showToast, setShowToast] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     async function decrypt() {
@@ -117,7 +122,7 @@ export default function ContentCard({
   return (
     <article
       onClick={handleCopy}
-      className={`relative p-6 cursor-pointer vault-card group ${topBorderClass} rounded-xl overflow-hidden`}
+      className={`relative p-6 cursor-pointer vault-card group ${topBorderClass} rounded-xl overflow-hidden transition-all duration-300 hover:shadow-lg hover:backdrop-blur-md hover:bg-white/10 hover:scale-[1.03] hover:z-10 ease-out backdrop-blur-sm bg-white/5 border border-white/10`}
     >
       {/* Copied! Toast - Modern Theme */}
       {showToast && (
@@ -141,9 +146,9 @@ export default function ContentCard({
           {/* Meta Row with Pill */}
           <div className="flex items-center gap-3 mb-3 flex-wrap">
             <TypePill type={type} cardType={cardType} />
-            <span className="text-slate-700 text-xs">•</span>
-            <span className="text-xs text-slate-500 font-medium tracking-tight">
-              {timestamp}
+            <span className="text-slate-700 text-xs font-mono">•</span>
+            <span className="text-xs text-slate-500 font-medium tracking-tight font-sans">
+              {mounted ? timestamp : '...'}
             </span>
             
             {/* Geospatial Badge */}
@@ -164,12 +169,12 @@ export default function ContentCard({
           </div>
           
           {/* Title - Light gray for high contrast */}
-          <h3 className="text-lg font-bold leading-tight mb-2 text-slate-100 tracking-tight group-hover:text-cyan-400 transition-colors">
+          <h3 className="text-xl font-bold leading-tight mb-2 text-slate-100 tracking-tight group-hover:text-cyan-400 transition-colors">
             {displayContent.title}
           </h3>
           
           {/* Description - Dimmer gray for body text */}
-          <p className="text-sm leading-relaxed line-clamp-2 text-slate-400 font-normal">
+          <p className="text-base leading-relaxed line-clamp-2 text-slate-400 font-normal font-sans">
             {displayContent.description}
           </p>
         </div>

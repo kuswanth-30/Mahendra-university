@@ -176,13 +176,13 @@ export default function FloatingActionButton() {
         <>
           {/* Backdrop */}
           <div 
-            className="fixed inset-0 bg-black/20 z-40"
+            className="fixed inset-0 bg-black/20 z-40 animate-in fade-in duration-200"
             onClick={handleCloseMenu}
           />
           
           <div
             ref={popoverRef}
-            className="fixed flex flex-col gap-2 z-50 bg-white border border-slate-200 rounded-2xl p-3 shadow-2xl"
+            className="fixed flex flex-col gap-2 z-[60] bg-white border border-slate-200 rounded-2xl p-3 shadow-2xl animate-in fade-in slide-in-from-bottom-2 duration-300"
             style={{
               top: popoverPosition?.top ? `${popoverPosition.top}px` : '0',
               left: popoverPosition?.left ? `${popoverPosition.left}px` : '0',
@@ -190,64 +190,64 @@ export default function FloatingActionButton() {
           >
             {/* Menu Header */}
             <div className="flex items-center justify-between px-3 py-2 border-b border-slate-200 mb-1">
-              <span className="text-xs font-semibold text-slate-600 font-mono">Actions</span>
+              <span className="text-sm font-bold text-slate-900 font-mono uppercase tracking-wider">Actions</span>
               <button 
                 onClick={handleCloseMenu}
-                className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-400 hover:text-slate-700 transition-colors"
+                className="p-1.5 hover:bg-slate-100 rounded-lg text-slate-500 hover:text-slate-900 transition-colors"
                 aria-label="Close menu"
               >
-                <X className="w-4 h-4" />
+                <X className="w-5 h-5" strokeWidth={2.5} />
               </button>
             </div>
 
             {/* Create Alert - Light theme */}
             <button 
               onClick={handleCreateAlert}
-              className="flex items-center gap-3 px-3 py-3 text-slate-700 hover:bg-red-50 hover:text-slate-900 rounded-xl transition-colors text-sm font-medium w-48 font-mono"
+              className="flex items-center gap-3 px-3 py-3 text-slate-900 hover:bg-red-50 rounded-xl transition-all duration-200 text-base font-bold w-56 font-mono group/item"
             >
-              <div className="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center">
-                <AlertTriangle className="w-4 h-4 text-red-500" />
+              <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                <AlertTriangle className="w-5 h-5 text-red-600" strokeWidth={2.5} />
               </div>
-              <span>Create Alert</span>
+              <span className="tracking-tight">Create Alert</span>
             </button>
             
             {/* Scan QR - Light theme */}
             <button
               onClick={handleScanQR}
-              className="flex items-center gap-3 px-3 py-3 text-slate-700 hover:bg-blue-50 hover:text-slate-900 rounded-xl transition-colors text-sm font-medium w-48 font-mono"
+              className="flex items-center gap-3 px-3 py-3 text-slate-900 hover:bg-blue-50 rounded-xl transition-all duration-200 text-base font-bold w-56 font-mono group/item"
             >
-              <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
-                <QrCode className="w-4 h-4 text-blue-500" />
+              <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                <QrCode className="w-5 h-5 text-blue-600" strokeWidth={2.5} />
               </div>
-              <span>Scan QR Code</span>
+              <span className="tracking-tight">Scan QR Code</span>
             </button>
             
             {/* New Message - Light theme */}
             <button
               onClick={handleCreateMessage}
-              className="flex items-center gap-3 px-3 py-3 text-slate-700 hover:bg-emerald-50 hover:text-slate-900 rounded-xl transition-colors text-sm font-medium w-48 font-mono"
+              className="flex items-center gap-3 px-3 py-3 text-slate-900 hover:bg-emerald-50 rounded-xl transition-all duration-200 text-base font-bold w-56 font-mono group/item"
             >
-              <div className="w-8 h-8 bg-emerald-50 rounded-lg flex items-center justify-center">
-                <MessageSquare className="w-4 h-4 text-emerald-500" />
+              <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center group-hover/item:scale-110 transition-transform">
+                <MessageSquare className="w-5 h-5 text-emerald-600" strokeWidth={2.5} />
               </div>
-              <span>New Message</span>
+              <span className="tracking-tight">New Message</span>
             </button>
           </div>
         </>
       )}
 
-      {/* FAB - Light theme */}
-      <button
-        ref={fabRef}
-        onClick={() => setIsOpen(!isOpen)}
-        className={`fixed bottom-6 right-6 z-50 w-14 h-14 bg-slate-900 hover:bg-slate-800 text-white rounded-full shadow-lg flex items-center justify-center transition-all ${
-          isOpen ? 'rotate-45 bg-red-500 hover:bg-red-600' : 'hover:scale-110'
-        }`}
-        aria-label={isOpen ? 'Close menu' : 'Add new'}
-        aria-expanded={isOpen}
-      >
-        <Plus className="w-6 h-6" strokeWidth={2} />
-      </button>
+      {/* FAB - Light theme - Hidden when menu is open */}
+      {!isOpen && (
+        <button
+          ref={fabRef}
+          onClick={() => setIsOpen(!isOpen)}
+          className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-slate-900 hover:bg-slate-800 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 animate-in fade-in duration-200"
+          aria-label="Add new"
+          aria-expanded={isOpen}
+        >
+          <Plus className="w-6 h-6" strokeWidth={2} />
+        </button>
+      )}
     </>
   );
 }
