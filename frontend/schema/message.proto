@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package mesh;
+
+/**
+ * MeshMessage - Minimalist message structure for 404 Found mesh network
+ * Optimized for low-bandwidth Bluetooth LE transmission
+ */
+message MeshMessage {
+  string m = 1;  // Content (message payload)
+  int64 t = 2;   // Timestamp (Unix epoch in milliseconds)
+  bytes s = 3;   // Signature (Ed25519 signature)
+  string id = 4; // Unique ID (deterministic hash for deduplication)
+}

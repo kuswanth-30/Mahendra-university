@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 100" width="400" height="100">
+  <!-- Logo Mark -->
+  <g id="logo-mark">
+    <!-- Purple Gradient Circle Background -->
+    <defs>
+      <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" style="stop-color:#9333ea;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#a855f7;stop-opacity:1" />
+      </linearGradient>
+    </defs>
+    
+    <!-- Logo Circle -->
+    <circle cx="50" cy="50" r="40" fill="url(#purpleGradient)"/>
+    
+    <!-- Calendar/Event Icon in White -->
+    <path d="M35 40h30v25h-30z" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M35 45h30" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    <path d="M42 35v10" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    <path d="M58 35v10" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Star/Event Burst -->
+    <circle cx="50" cy="55" r="5" fill="white"/>
+  </g>
+  
+  <!-- Text: UniEvent Hub -->
+  <g id="logo-text" transform="translate(105, 50)">
+    <!-- UniEvent -->
+    <text x="0" y="8" font-family="Consolas, monospace" font-size="32" font-weight="bold" fill="#e0e0e0">
+      UniEvent
+    </text>
+    <!-- Hub -->
+    <text x="145" y="8" font-family="Consolas, monospace" font-size="32" font-weight="bold" fill="#9333ea">
+      Hub
+    </text>
+  </g>
+</svg>

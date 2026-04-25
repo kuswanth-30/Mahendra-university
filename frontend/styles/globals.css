@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #000000;
+  --foreground: #e5e7eb;
+  --primary: #00ff41;
+  --primary-foreground: #000000;
+  --secondary: #00ff41;
+  --secondary-foreground: #000000;
+  --destructive: #ff003c;
+  --card: #000000;
+  --card-border: #1f2937;
+  --accent: #00ff41;
+  --muted: #0f172a;
+  --muted-foreground: #9ca3af;
+  --border: #1f2937;
+}
+
+@theme inline {
+  --font-sans: 'Consolas', 'Monaco', 'Courier New', monospace;
+  --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+  --color-terminal-green: #00ff41;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-primary/20 transition-all duration-200 ease-out;
+  }
+  body {
+    @apply bg-black text-[#e5e7eb] font-mono antialiased selection:bg-terminal-green/30 selection:text-terminal-green;
+  }
+}
+
+/* Midnight Terminal Glassmorphism */
+.glass {
+  @apply backdrop-blur-md bg-black/50 border-b border-terminal-green/50;
+}
+
+/* Terminal Card Effect */
+.vault-card {
+  @apply bg-black border border-gray-800 hover:border-terminal-green hover:shadow-[0_0_15px_rgba(0,255,65,0.2)] transition-all duration-300;
+}
+
+/* Shimmer Animation for Terminal */
+@keyframes shimmer {
+  0% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.3; }
+}
+
+.animate-shimmer {
+  @apply animate-pulse bg-gray-900;
+}
+

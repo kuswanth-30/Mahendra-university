@@ -1,0 +1,99 @@
+{
+  "name": "404 Found - Tactical Emergency Network",
+  "short_name": "404 Found",
+  "description": "Offline-first emergency communication network for high-stress environments",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0D0D19",
+  "theme_color": "#0D0D19",
+  "orientation": "portrait",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "categories": ["utilities", "social"],
+  "screenshots": [
+    {
+      "src": "/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Alert",
+      "short_name": "Alert",
+      "description": "Broadcast a new emergency alert",
+      "url": "/?action=alert",
+      "icons": [{ "src": "/icon-alert.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Scan QR",
+      "short_name": "Scan",
+      "description": "Scan a QR code for data exchange",
+      "url": "/?action=scan",
+      "icons": [{ "src": "/icon-scan.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "features": [
+    "Offline capable",
+    "Background sync",
+    "Camera access for QR scanning"
+  ]
+}

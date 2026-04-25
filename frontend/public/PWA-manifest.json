@@ -1,0 +1,110 @@
+{
+  "name": "404 Found - Tactical Emergency Network",
+  "short_name": "404 Found",
+  "description": "Offline-first emergency communication network for DTN mesh environments",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "orientation": "portrait",
+  "scope": "/",
+  "id": "/",
+  "categories": ["utilities", "communication", "social"],
+  "icons": [
+    {
+      "src": "/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Scan QR Code",
+      "short_name": "Scan",
+      "description": "Quick access to QR scanner",
+      "url": "/?action=scan",
+      "icons": [{ "src": "/icon-scan-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Emergency Alert",
+      "short_name": "Alert",
+      "description": "Send emergency broadcast",
+      "url": "/?action=alert",
+      "icons": [{ "src": "/icon-alert-96x96.png", "sizes": "96x96" }]
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+found404",
+      "url": "/protocol?q=%s"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "id": "com.found404.mesh"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/404-found/idXXXXXXXX"
+    }
+  ],
+  "prefer_related_applications": false
+}
