@@ -37,33 +37,7 @@ export default function QRManager() {
     toast.success('QR Code Generated');
   };
 
-  // Start Scanner
-  const startScanner = () => {
-    setIsScanning(true);
-    
-    // Brief delay to ensure container is rendered
-    setTimeout(() => {
-      const scanner = new Html5QrcodeScanner(
-        "qr-reader",
-        { fps: 10, qrbox: { width: 250, height: 250 } },
-        /* verbose= */ false
-      );
-
-      scanner.render(onScanSuccess, onScanFailure);
-      scannerRef.current = scanner;
-    }, 100);
-  };
-
-  // Stop Scanner
-  const stopScanner = () => {
-    if (scannerRef.current) {
-      scannerRef.current.clear().catch(err => console.error('Failed to clear scanner', err));
-      scannerRef.current = null;
-    }
-    setIsScanning(false);
-  };
-
-  // Successful Scan
+  // Remove redundant scanning logic from QRManager
   const onScanSuccess = async (decodedText) => {
     try {
       const parsedData = JSON.parse(decodedText);
@@ -86,27 +60,12 @@ export default function QRManager() {
       };
 
       await messageService.saveMessage(messageToSave);
-      
       toast.success('Message imported successfully via QR');
-      stopScanner();
     } catch (error) {
       console.error('[QRScanner] Parse error:', error);
       toast.error('Invalid QR Code: ' + error.message);
     }
   };
-
-  const onScanFailure = (error) => {
-    // Failures happen constantly while scanning, we usually ignore them
-  };
-
-  // Cleanup scanner on unmount
-  useEffect(() => {
-    return () => {
-      if (scannerRef.current) {
-        scannerRef.current.clear().catch(err => console.error('Failed to clear scanner', err));
-      }
-    };
-  }, []);
 
   return (
     <Card className="w-full max-w-2xl mx-auto bg-slate-950/40 backdrop-blur-xl border-white/5 shadow-2xl p-6 overflow-hidden">
@@ -116,7 +75,7 @@ export default function QRManager() {
             <span className="w-4 h-4 bg-[#00ff41] rounded-full flex shadow-[0_0_15px_rgba(0,255,65,0.6)]" />
             <span className="absolute inset-0 w-4 h-4 bg-[#00ff41] rounded-full animate-ping opacity-40" />
           </div>
-          <span className="drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]">QR DEAD DROP SYSTEM</span>
+          <span className drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]>QR DEAD DROP SYSTEM</span>
         </CardTitle>
         <CardDescription className="font-mono text-[10px] text-[#00ff41]/60 uppercase tracking-[0.2em] mt-2">
           SECURE OFFLINE STORE-AND-FORWARD BRIDGE
@@ -176,7 +135,7 @@ export default function QRManager() {
           </TabsContent>
 
           <TabsContent value="scanner" className="space-y-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
-            <QRScanner />
+            <QRScanner onImportSuccess={onScanSuccess} />
           </TabsContent>
         </Tabs>
       </CardContent>
