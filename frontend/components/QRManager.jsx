@@ -130,13 +130,13 @@ export default function QRManager() {
               value="generator" 
               className="rounded-md data-[state=active]:bg-[#00ff41]/10 data-[state=active]:text-[#00ff41] data-[state=active]:border data-[state=active]:border-[#00ff41]/20 transition-all duration-300 py-2"
             >
-              ENCODER.EXE
+              Generate QR
             </TabsTrigger>
             <TabsTrigger 
               value="scanner" 
               className="rounded-md data-[state=active]:bg-[#00ff41]/10 data-[state=active]:text-[#00ff41] data-[state=active]:border data-[state=active]:border-[#00ff41]/20 transition-all duration-300 py-2"
             >
-              DECODER.SYS
+              Scan QR
             </TabsTrigger>
           </TabsList>
 
