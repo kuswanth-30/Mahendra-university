@@ -47,6 +47,7 @@ jobs:
         run: npm run build:static
         env:
           NODE_ENV: production
+          NODE_OPTIONS: --max-old-space-size=4096
 
       - name: Deploy to Firebase
         run: firebase deploy --only hosting --token "${{ secrets.FIREBASE_TOKEN }}" --non-interactive
