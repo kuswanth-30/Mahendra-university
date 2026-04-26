@@ -14,7 +14,7 @@ import { qrProtocol } from '@/lib/services/qrProtocol';
  * Accepts a messageId, retrieves it from Dexie, serializes to QR protocol format,
  * signs with ephemeral key, and renders as a QR code.
  */
-export default function QRGenerator({ messageId }) {
+export default function QRGenerator({ messageId, content }) {
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -22,6 +22,14 @@ export default function QRGenerator({ messageId }) {
 
   useEffect(() => {
     async function loadMessage() {
+      // If direct content is provided (from the manual textarea), use it directly
+      if (content) {
+        setMessage(content);
+        setError(null);
+        setLoading(false);
+        return;
+      }
+
       if (!messageId) {
         setLoading(false);
         return;
@@ -60,7 +68,7 @@ export default function QRGenerator({ messageId }) {
     }
 
     loadMessage();
-  }, [messageId]);
+  }, [messageId, content]);
 
   const handlePrint = () => {
     window.print();
