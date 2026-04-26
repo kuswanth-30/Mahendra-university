@@ -14,7 +14,7 @@ import {
   QrCode,
   MapPin,
   PlusCircle,
-  RefreshCw
+  RotateCw
 } from 'lucide-react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db, type Message } from '@/lib/db';
@@ -225,7 +225,7 @@ export default function ContentFeed({ tab }: ContentFeedProps) {
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-500/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               {isScanningPeers ? (
-                <RefreshCw className="w-4 h-4 animate-spin" />
+                <RotateCw className="w-4 h-4 animate-spin" />
               ) : (
                 <Search className="w-4 h-4" />
               )}

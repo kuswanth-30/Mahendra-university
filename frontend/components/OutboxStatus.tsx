@@ -1,6 +1,6 @@
 'use client';
 
-import { Database, RefreshCw, AlertTriangle, WifiOff, Cloud, CloudOff } from 'lucide-react';
+import { Database, RotateCw, AlertTriangle, WifiOff, Cloud, CloudOff } from 'lucide-react';
 import { useOfflineFirst } from '@/hooks/useOfflineFirst';
 
 export default function OutboxStatus() {
@@ -31,7 +31,7 @@ export default function OutboxStatus() {
           )}
           {status.isProcessing && (
             <span className="flex items-center gap-1 text-xs text-blue-600">
-              <RefreshCw className="w-3 h-3 animate-spin" />
+              <RotateCw className="w-3 h-3 animate-spin" />
               Syncing...
             </span>
           )}

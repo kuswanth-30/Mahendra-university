@@ -6,7 +6,7 @@ import NavigationTabs from '@/components/NavigationTabs';
 import ContentFeed from '@/components/ContentFeed';
 import FloatingActionButton from '@/components/FloatingActionButton';
 import OutboxStatus from '@/components/OutboxStatus';
-// import ConflictResolver from '@/components/ConflictResolver';
+import OnboardingModal from '@/components/OnboardingModal';
 
 // Lazy load heavy components
 const QRManager = lazy(() => import('@/components/QRManager'));
@@ -18,6 +18,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-cyber-black text-cyber-gray font-mono selection:bg-cyber-green/30 selection:text-cyber-green">
+      <OnboardingModal />
       <div className="min-h-screen">
         <Header />
         <NavigationTabs activeTab={activeTab} onTabChange={setActiveTab} />

@@ -12,6 +12,7 @@ interface UseQRScannerReturn {
   startScanner: () => void;
   stopScanner: () => void;
   resetScanner: () => void;
+  handleScanSuccess: (decodedText: string) => Promise<void>;
 }
 
 export function useQRScanner(onImportSuccess?: (data: any) => void): UseQRScannerReturn {
@@ -148,6 +149,7 @@ export function useQRScanner(onImportSuccess?: (data: any) => void): UseQRScanne
     cameraPermission,
     startScanner,
     stopScanner,
-    resetScanner
+    resetScanner,
+    handleScanSuccess
   };
 }

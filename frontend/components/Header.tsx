@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AlertTriangle, Wifi, RefreshCw, CloudOff, Users, SignalHigh, SignalLow, Signal, Zap, Sun, Moon, Database } from 'lucide-react';
+import { AlertTriangle, Wifi, RotateCw, CloudOff, Users, SignalHigh, SignalLow, Signal, Zap, Sun, Moon, Database } from 'lucide-react';
 import { useSimpleSyncStatus, useSyncStatus } from '@/hooks/useSyncStatus';
 import { useMesh } from '@/hooks/useMesh';
 import { useHasConflicts } from '@/hooks/useMeshConflicts';
@@ -86,7 +86,7 @@ export default function Header() {
       color: '#94a3b8',
     },
     'SYNCING': {
-      icon: RefreshCw,
+      icon: RotateCw,
       bgColor: 'bg-amber-500/10',
       borderColor: 'border-amber-500/20',
       dotColor: 'bg-amber-400',
@@ -100,7 +100,7 @@ export default function Header() {
       color: '#f87171',
     },
     'RECONNECTING': {
-      icon: RefreshCw,
+      icon: RotateCw,
       bgColor: theme === 'dark' ? 'bg-amber-900/20' : 'bg-amber-50',
       borderColor: theme === 'dark' ? 'border-amber-700' : 'border-amber-200',
       dotColor: 'bg-amber-500',

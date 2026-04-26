@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Plus, AlertTriangle, QrCode, X, MessageSquare } from 'lucide-react';
+import { Plus, AlertTriangle, QrCode, X, MessageSquare, RotateCw, ShieldAlert } from 'lucide-react';
 import QRScanner from './QRScanner';
 import AlertModal from './AlertModal';
 import { useToast } from '@/hooks/useToast';
@@ -236,18 +236,38 @@ export default function FloatingActionButton() {
         </>
       )}
 
-      {/* FAB - Light theme - Hidden when menu is open */}
-      {!isOpen && (
+      {/* FAB and Action Buttons Side Column */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-center gap-4">
+        {/* Reset/Refresh Button */}
         <button
-          ref={fabRef}
-          onClick={() => setIsOpen(!isOpen)}
-          className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-slate-900 hover:bg-slate-800 text-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 animate-in fade-in duration-200"
-          aria-label="Add new"
-          aria-expanded={isOpen}
+          onClick={() => window.location.reload()}
+          className="w-12 h-12 bg-white/5 backdrop-blur-xl border border-white/10 text-white rounded-full shadow-[0_0_15px_rgba(255,255,255,0.1)] flex items-center justify-center transition-all hover:scale-110 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] active:scale-95 group"
+          aria-label="Refresh session"
         >
-          <Plus className="w-6 h-6" strokeWidth={2} />
+          <RotateCw className="w-5 h-5 text-slate-400 group-hover:text-white transition-colors" />
         </button>
-      )}
+
+        {/* Security/Shield Button */}
+        <button
+          className="w-12 h-12 bg-[#00ff41]/5 backdrop-blur-xl border border-[#00ff41]/20 text-[#00ff41] rounded-full shadow-[0_0_15px_rgba(0,255,65,0.1)] flex items-center justify-center transition-all hover:scale-110 hover:bg-[#00ff41]/10 hover:shadow-[0_0_20px_rgba(0,255,65,0.3)] active:scale-95 group"
+          aria-label="Security status"
+        >
+          <ShieldAlert className="w-5 h-5 group-hover:animate-pulse" />
+        </button>
+
+        {/* FAB - Dark theme with glow */}
+        {!isOpen && (
+          <button
+            ref={fabRef}
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-16 h-16 bg-slate-900/40 backdrop-blur-2xl border border-white/20 text-white rounded-full shadow-[0_0_30px_rgba(255,255,255,0.1)] flex items-center justify-center transition-all hover:scale-110 hover:bg-slate-800/60 hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] hover:border-white/40 animate-in fade-in duration-300 group"
+            aria-label="Add new"
+            aria-expanded={isOpen}
+          >
+            <Plus className="w-8 h-8 transition-transform group-hover:rotate-90 duration-500" strokeWidth={2.5} />
+          </button>
+        )}
+      </div>
     </>
   );
 }

@@ -40,6 +40,19 @@ export function sanitizeMetadata(message) {
 
 class MessageService {
   /**
+   * Computes a SHA-256 hash of the content to use as a unique ID
+   * @param {any} content 
+   * @returns {Promise<string>}
+   */
+  async computeMessageId(content) {
+    const msgString = typeof content === 'string' ? content : JSON.stringify(content);
+    const msgUint8 = new TextEncoder().encode(msgString);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  /**
    * Saves a message to the mesh storage with E2EE, Data Minimization, and Session-based Disk Encryption.
    * 
    * Flow:
@@ -68,7 +81,7 @@ class MessageService {
 
     // Step B: Auto-compute SHA-256 ID if missing
     if (!sanitized.id) {
-      sanitized.id = await computeMessageId(sanitized.content);
+      sanitized.id = await this.computeMessageId(sanitized.content);
     }
 
     // Step C: Assign Vector Clock (Logical Counter)
