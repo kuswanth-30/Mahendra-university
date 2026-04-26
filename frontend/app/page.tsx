@@ -9,7 +9,7 @@ import OutboxStatus from '@/components/OutboxStatus';
 // import ConflictResolver from '@/components/ConflictResolver';
 
 // Lazy load heavy components
-// const QRManager = lazy(() => import('@/components/QRManager'));
+const QRManager = lazy(() => import('@/components/QRManager'));
 const MeshNetwork = lazy(() => import('@/components/MeshNetwork'));
 const Settings = lazy(() => import('@/components/Settings'));
 
@@ -29,7 +29,11 @@ export default function Home() {
           
           <div className="bg-card/50 backdrop-blur-sm rounded-xl border border-gray-800 p-1 min-h-[60vh] transition-all shadow-[0_0_20px_rgba(0,0,0,0.4)]">
             <div className="p-4 sm:p-6">
-              {activeTab === 'mesh' ? (
+              {activeTab === 'qr' ? (
+                <Suspense fallback={<div className="text-center text-gray-500 py-10">Loading QR Manager...</div>}>
+                  <QRManager />
+                </Suspense>
+              ) : activeTab === 'mesh' ? (
                 <Suspense fallback={<div className="text-center text-gray-500 py-10">Loading Mesh Network...</div>}>
                   <MeshNetwork />
                 </Suspense>
